@@ -52,14 +52,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetTransforms() {
       heroImgs.forEach(img => {
-        img.style.transform = 'rotateX(0deg) rotateY(0deg) translate3d(0px, 0px, 0)';
+        img.style.transform = '';
       });
     }
 
+    function clearTiltState() {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      targetX = 0;
+      targetY = 0;
+      currentX = 0;
+      currentY = 0;
+      active = false;
+      resetTransforms();
+    }
+
     function tick() {
+      if (window.innerWidth < 768) {
+        clearTiltState();
+        return;
+      }
+
       currentX = lerp(currentX, targetX, LERP);
       currentY = lerp(currentY, targetY, LERP);
       applyTransforms();
+
       const delta = Math.abs(currentX - targetX) + Math.abs(currentY - targetY);
       if (delta > 0.005 || active) {
         rafId = requestAnimationFrame(tick);
@@ -69,10 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    const ensureLoop = () => { if (!rafId) rafId = requestAnimationFrame(tick); };
+    const ensureLoop = () => {
+      if (window.innerWidth < 768) {
+        clearTiltState();
+        return;
+      }
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    };
 
     heroArea.addEventListener('mousemove', e => {
-      if (window.innerWidth < 768) return;
+      if (window.innerWidth < 768) {
+        clearTiltState();
+        return;
+      }
       const nx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
       const ny = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
       targetX = -ny * MAX_TILT;
@@ -82,8 +110,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     heroArea.addEventListener('mouseleave', () => {
-      targetX = 0; targetY = 0; active = false; ensureLoop();
+      if (window.innerWidth < 768) {
+        clearTiltState();
+        return;
+      }
+      targetX = 0;
+      targetY = 0;
+      active = false;
+      ensureLoop();
     });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 768) {
+        clearTiltState();
+      }
+    });
+
+    if (window.innerWidth < 768) {
+      resetTransforms();
+    }
   }
 
 

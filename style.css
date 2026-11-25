@@ -333,11 +333,39 @@ p {
   display: none;
 }
 
-/* Primary — kiri-atas */
+/* Primary — kiri-atas + animasi drop & fade loop 10 detik */
 .primary-float {
-  top: 44%;
-  left: 41%;
+  top: 38%;
+  left: 33%;
   z-index: 10;
+  animation: dropAndFade10s 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes dropAndFade10s {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% - 55px));
+  }
+
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  84% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  95% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 28px));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% - 55px));
+  }
 }
 
 /* Secondary — kanan-bawah (berlawanan, lebih kecil = kedalaman ruang) */
@@ -1161,13 +1189,23 @@ img:not(.hero-3d-img) {
 @media (max-width: 767px) {
   .pricing-switcher {
     width: 100%;
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .switch-glider {
-    width: calc(100% - 8px);
-    height: calc((100% - 8px) / 3);
-    transform: translateY(calc(var(--tab-index, 0) * 100%));
+    width: calc((100% - 8px) / 3);
+    height: calc(100% - 8px);
+    transform: translateX(calc(var(--tab-index, 0) * 100%));
+  }
+
+  .switch-btn {
+    padding: 12px 6px;
+    font-size: 0.64rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    white-space: normal;
+    word-break: break-word;
   }
 }
 
@@ -1659,12 +1697,6 @@ img:not(.hero-3d-img) {
     padding: 0 24px;
   }
 
-  /* Section spacious — mobile */
-  .section-spacious {
-    margin: 96px auto;
-    padding: 0 24px;
-  }
-
   /* Intro grid — mobile */
   .intro-grid {
     grid-template-columns: 1fr;
@@ -1727,44 +1759,6 @@ img:not(.hero-3d-img) {
     display: none;
   }
 
-  /* Hero mobile */
-  .hero-centerpiece {
-    min-height: auto;
-    padding: 60px 20px 0;
-  }
-
-  .hero-stage {
-    margin: 24px 0 36px;
-  }
-
-  .hero-giant-text {
-    font-size: clamp(2.2rem, 11vw, 3.6rem);
-    line-height: 1;
-  }
-
-  /* Primary float — mobile */
-  .primary-float {
-    top: 42%;
-    left: 37%;
-  }
-
-  /* Secondary float — mobile */
-  .secondary-float {
-    top: 68%;
-    left: 71%;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .hero-buttons .btn-white,
-  .hero-buttons .btn-outline {
-    width: 100%;
-    text-align: center;
-  }
-
   /* Kinetic boxes mobile */
   .kinetic-boxes-section {
     margin-top: 100px;
@@ -1783,32 +1777,108 @@ img:not(.hero-3d-img) {
 
 
 /* ============================================================
-   RESPONSIVE — SMALL MOBILE (< 480px)
+   RESPONSIVE — FULL MOBILE HERO & MARGINS (< 767px)
+   Ditempatkan setelah 768px agar konsisten di semua layar HP
    ============================================================ */
-@media (max-width: 480px) {
+@media (max-width: 767px) {
+
+  .navbar .container,
+  .section-spacious {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .section-spacious .container,
+  .hero-centerpiece .container {
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .section-spacious {
+    margin-top: 84px;
+    margin-bottom: 84px;
+  }
+
   .hero-centerpiece {
-    padding: 48px 16px 0;
+    min-height: 82vh;
+    padding: 44px 14px 0;
+    justify-content: center;
+  }
+
+  .hero-kicker {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-stage {
+    width: 100%;
+    margin: 22px 0 34px;
   }
 
   .hero-giant-text {
-    font-size: clamp(1.9rem, 12vw, 2.8rem);
+    width: 100%;
+    font-size: clamp(2.85rem, 11.8vw, 4.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  .primary-float {
+    top: 36%;
+    left: 30%;
   }
 
   .primary-float .hero-3d-img {
-    width: clamp(130px, 38vw, 200px);
+    width: clamp(165px, 44vw, 220px);
+  }
+
+  .secondary-float {
+    top: 68%;
+    left: 72%;
   }
 
   .secondary-float .hero-3d-img {
-    width: clamp(80px, 22vw, 130px);
+    width: clamp(105px, 28vw, 145px);
   }
 
+  .hero-actions {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .hero-actions p,
+  .hero-sub {
+    max-width: 100%;
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .hero-buttons,
+  .hero-btn-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-buttons .btn-white,
+  .hero-buttons .btn-outline,
+  .hero-btn-group .btn-white,
+  .hero-btn-group .btn-outline {
+    width: 100%;
+    text-align: center;
+    padding: 16px 20px;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL MOBILE (< 480px)
+   ============================================================ */
+@media (max-width: 480px) {
   .kinetic-box {
     width: 220px;
     padding: 20px;
-  }
-
-  .hero-sub {
-    font-size: 0.9375rem;
   }
 }
 
@@ -1827,6 +1897,7 @@ img:not(.hero-3d-img) {
     scroll-behavior: auto !important;
   }
 
+  .primary-float,
   .hero-3d-float {
     animation: none;
   }
@@ -1898,8 +1969,17 @@ img:not(.hero-3d-img) {
 }
 
 @keyframes dotBlink {
-  0%, 100% { opacity: 1;   transform: scale(1);    }
-  50%       { opacity: 0.2; transform: scale(0.75); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.2;
+    transform: scale(0.75);
+  }
 }
 
 #promo-countdown {
@@ -1937,12 +2017,10 @@ img:not(.hero-3d-img) {
   left: -120%;
   width: 80%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.35),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.35),
+      transparent);
   transform: skewX(-20deg);
   animation: shimmerSweep 3s infinite;
 }
@@ -1956,13 +2034,26 @@ img:not(.hero-3d-img) {
 }
 
 @keyframes discountPulse {
-  0%, 100% { transform: scale(1);    }
-  50%       { transform: scale(1.05); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 @keyframes shimmerSweep {
-  0%        { left: -120%; }
-  45%, 100% { left: 160%;  }
+  0% {
+    left: -120%;
+  }
+
+  45%,
+  100% {
+    left: 160%;
+  }
 }
 
 
@@ -1999,7 +2090,9 @@ img:not(.hero-3d-img) {
 }
 
 @keyframes strikeDraw {
-  to { transform: scaleX(1); }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 
